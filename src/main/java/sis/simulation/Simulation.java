@@ -3,21 +3,30 @@ package sis.simulation;
 import sis.conditions.Condition;
 import sis.intersection.Intersection;
 import sis.lanes.Lane;
+import sis.visualizatoon.Visualizer;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Simulation {
     private final Intersection intersection;
+    private final Visualizer visualizer;
 
-    public Simulation(Intersection intersection) {
+    public Simulation(Intersection intersection, Visualizer visualizer) {
         this.intersection = intersection;
+        this.visualizer = visualizer;
     }
 
     public void step() {
+        intersection.reset();
+
         ConditionedLanes conditionedLanes = groupLanes();
         SortedLanes sortedLanes = calculateChanges(conditionedLanes);
-        queueLightChanges(sortedLanes.greenLanes(), sortedLanes.redLanes());
+        queueLightChanges(sortedLanes);
+
+        moveLanes(sortedLanes);
+
+        visualizer.visualize(intersection);
     }
 
     private ConditionedLanes groupLanes() {
@@ -27,18 +36,19 @@ public class Simulation {
                 .stream()
                 .collect(Collectors.groupingBy(Lane::isReadyToChange));
 
-        for (Lane lane : lanesByReady.getOrDefault(false, List.of())) {
+        List<Lane> nonChangableLanes = lanesByReady.getOrDefault(false, Collections.emptyList());
+        for (Lane lane : nonChangableLanes) {
             conflictConditions.addAll(lane.getConflictConditions());
         }
 
         List<Lane> changableLanes = lanesByReady.getOrDefault(true, List.of());
         Collections.shuffle(changableLanes); // TODO order by priority
 
-        return new ConditionedLanes(conflictConditions, changableLanes);
+        return new ConditionedLanes(conflictConditions, changableLanes, nonChangableLanes);
     }
 
     private SortedLanes calculateChanges(ConditionedLanes conditionedLanes) {
-        List<Lane> changableLanes = conditionedLanes.laneList();
+        List<Lane> changableLanes = conditionedLanes.changableLanes();
         Set<Condition> conflictConditions = conditionedLanes.conditionSet();
 
         List<Lane> greenLanes = new LinkedList<>();
@@ -62,15 +72,30 @@ public class Simulation {
             }
         }
 
-        return new SortedLanes(greenLanes, redLanes);
+        return new SortedLanes(greenLanes, redLanes, conditionedLanes.nonChangableLanes());
     }
 
-    private void queueLightChanges(List<Lane> greenLanes, List<Lane> redLanes) {
-        for (Lane lane : greenLanes) {
+    private void queueLightChanges(SortedLanes lanes) {
+        for (Lane lane : lanes.greenLanes()) {
             lane.queueGreenLight();
         }
-        for (Lane lane : redLanes) {
+        for (Lane lane : lanes.redLanes()) {
             lane.queueRedLight();
+        }
+        for (Lane lane : lanes.nonChangableLanes()) {
+            lane.doNotChange();
+        }
+    }
+
+    private void moveLanes(SortedLanes lanes) {
+        for (Lane lane : lanes.nonChangableLanes()) {
+            lane.makeStep();
+        }
+        for (Lane lane : lanes.greenLanes()) {
+            lane.makeStep();
+        }
+        for (Lane lane : lanes.redLanes()) {
+            lane.makeStep();
         }
     }
 

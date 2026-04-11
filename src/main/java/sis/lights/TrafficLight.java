@@ -1,6 +1,9 @@
 package sis.lights;
 
+import sis.visualizatoon.Color;
+
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public abstract class TrafficLight {
@@ -15,15 +18,35 @@ public abstract class TrafficLight {
         this.skippedSteps = 0;
     }
 
-    public void queueRed() throws IllegalStateException {
-        if (!isReadyToChange()) {
-            throw new IllegalStateException();
-        }
+    public void queueRed() {
+        queueState(getRedTransition(), isAlreadyRed());
     }
-    public void queueGreen() throws IllegalStateException{
+
+    public void queueGreen() {
+        queueState(getGreenTransition(), isAlreadyGreen());
+    }
+
+    private void queueState(List<TrafficLightState> steps, boolean alreadyInState) {
         if (!isReadyToChange()) {
             throw new IllegalStateException();
         }
+
+        if (alreadyInState) {
+            return;
+        }
+
+        this.statesQueue.addAll(steps);
+    }
+
+    protected abstract List<TrafficLightState> getRedTransition();
+    protected abstract List<TrafficLightState> getGreenTransition();
+
+    protected boolean isAlreadyRed() {
+        return this.currentState == TrafficLightState.RED;
+    }
+
+    protected boolean isAlreadyGreen() {
+        return this.currentState == TrafficLightState.GREEN;
     }
 
     public boolean isReadyToChange() {
@@ -46,5 +69,13 @@ public abstract class TrafficLight {
 
         this.skippedSteps = 0;
         this.currentState = statesQueue.poll();
+    }
+
+    public TrafficLightState getCurrentState() {
+        return currentState;
+    }
+
+    public Color getColor() {
+        return this.currentState.getColor();
     }
 }

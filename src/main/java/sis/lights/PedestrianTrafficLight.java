@@ -5,20 +5,18 @@ import java.util.List;
 public class PedestrianTrafficLight extends TrafficLight {
 
     @Override
-    public void queueRed() throws IllegalStateException {
-        super.queueRed();
-        this.statesQueue.addAll(List.of(
+    protected List<TrafficLightState> getRedTransition() {
+        return List.of(
                 TrafficLightState.BLINK_GREEN,
                 TrafficLightState.RED
-        ));
+        );
     }
 
     @Override
-    public void queueGreen() throws IllegalStateException {
-        super.queueGreen();
-        this.statesQueue.addAll(List.of(
+    protected List<TrafficLightState> getGreenTransition() {
+        return List.of(
                 TrafficLightState.RED,
                 TrafficLightState.GREEN
-        ));
+        );
     }
 }

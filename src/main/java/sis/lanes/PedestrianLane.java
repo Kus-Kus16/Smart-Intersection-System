@@ -1,6 +1,5 @@
 package sis.lanes;
 
-import sis.Direction;
 import sis.conditions.*;
 import sis.intersection.Intersection;
 import sis.lights.PedestrianTrafficLight;
@@ -26,5 +25,10 @@ public class PedestrianLane extends Lane {
                 new AndCondition(new CarExitCondition(side), new CarCollisionFreeCondition())
         );
 
+    }
+
+    @Override
+    protected String getRepresentation() {
+        return "(A)";
     }
 }

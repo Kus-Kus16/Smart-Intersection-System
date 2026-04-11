@@ -1,6 +1,6 @@
 package sis.conditions;
 
-import sis.Direction;
+import sis.lanes.Direction;
 import sis.lanes.Lane;
 import sis.lanes.LaneType;
 

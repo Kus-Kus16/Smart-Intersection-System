@@ -1,14 +1,11 @@
 package sis;//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 
-import sis.conditions.Condition;
 import sis.intersection.Intersection;
-import sis.lanes.Lane;
-import sis.lanes.LeftLane;
-import sis.lanes.PedestrianLane;
-import sis.lanes.StraightRightLane;
-
-import java.util.*;
+import sis.lanes.*;
+import sis.simulation.Simulation;
+import sis.visualizatoon.ConsoleVisualizer;
+import sis.visualizatoon.Visualizer;
 
 public class Main {
     static void main() {
@@ -23,11 +20,12 @@ public class Main {
             intersection.addLane(pedestrianLane);
         }
 
-        for (int i = 0; i < 5; i++) {
+        Visualizer visualizer = new ConsoleVisualizer();
+        Simulation simulation = new Simulation(intersection, visualizer);
 
-
-            System.out.println(greenLanes);
-            System.out.println("\n");
+        visualizer.visualize(intersection);
+        for (int i = 0; i < 15; i++) {
+            simulation.step();
         }
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 public record SortedLanes(
         List<Lane> greenLanes,
-        List<Lane> redLanes
+        List<Lane> redLanes,
+        List<Lane> nonChangableLanes
 ) {
 }

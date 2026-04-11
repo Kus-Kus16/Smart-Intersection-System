@@ -8,6 +8,7 @@ import java.util.Set;
 
 public record ConditionedLanes(
         Set<Condition> conditionSet,
-        List<Lane> laneList
+        List<Lane> changableLanes,
+        List<Lane> nonChangableLanes
 ) {
 }

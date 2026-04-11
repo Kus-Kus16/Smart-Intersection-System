@@ -1,35 +1,67 @@
 package sis.intersection;
 
-import sis.Direction;
+import sis.lanes.Direction;
 import sis.lanes.Lane;
+import sis.users.RoadUser;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Intersection {
-    Map<Direction, IntersectionEntry> entries;
+    Map<Direction, IntersectionSide> intersectionSides;
+    List<RoadUser> exitedUsers;
 
     public Intersection() {
-        entries = new HashMap<>();
+        intersectionSides = new HashMap<>();
+        this.exitedUsers = new ArrayList<>();
 
         for (Direction d : Direction.values()) {
-            entries.put(d, new IntersectionEntry());
+            intersectionSides.put(d, new IntersectionSide());
         }
     }
 
     public void addLane(Lane lane) {
-        IntersectionEntry entry = entries.get(lane.getEntry());
+        IntersectionSide entry = intersectionSides.get(lane.getEntry());
         entry.addLane(lane);
     }
 
     public Set<Lane> getAllLanes() {
         Set<Lane> lanes = new HashSet<>();
-        for (IntersectionEntry entry : entries.values()) {
-            lanes.addAll(entry.getLanes());
+        for (IntersectionSide entry : intersectionSides.values()) {
+            lanes.addAll(entry.getEntryLanes());
         }
 
         return lanes;
+    }
+
+    public boolean hasPedestrianTraffic(Direction side) {
+        return intersectionSides.get(side).hasPedestrianTraffic();
+    }
+
+    public boolean hasExitTraffic(Direction side) {
+        return intersectionSides.get(side).hasExitTraffic();
+    }
+
+    public void addExitedUser(RoadUser user) {
+        this.exitedUsers.add(user);
+    }
+
+    public void reset() {
+        this.exitedUsers.clear();
+
+        for (IntersectionSide side : intersectionSides.values()) {
+            side.resetValues();
+        }
+    }
+
+    public IntersectionSide getIntersectionSide(Direction side) {
+        return intersectionSides.get(side);
+    }
+
+    public Map<Direction, IntersectionSide> getIntersectionSides() {
+        return intersectionSides;
+    }
+
+    public List<RoadUser> getExitedUsers() {
+        return exitedUsers;
     }
 }

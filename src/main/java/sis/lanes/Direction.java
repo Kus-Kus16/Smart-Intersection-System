@@ -1,4 +1,4 @@
-package sis;
+package sis.lanes;
 
 public enum Direction {
     NORTH(0),

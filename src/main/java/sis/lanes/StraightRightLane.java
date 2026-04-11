@@ -1,6 +1,5 @@
 package sis.lanes;
 
-import sis.Direction;
 import sis.conditions.Condition;
 import sis.conditions.CarEntryCondition;
 import sis.conditions.CarExitCondition;
@@ -32,5 +31,10 @@ public class StraightRightLane extends Lane{
                 new CarExitCondition(straight),
                 new CarEntryCondition(right)
         );
+    }
+
+    @Override
+    protected String getRepresentation() {
+        return "(^>)";
     }
 }
