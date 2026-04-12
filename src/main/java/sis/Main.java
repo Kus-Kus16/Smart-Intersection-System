@@ -5,6 +5,8 @@ import sis.lanes.*;
 import sis.simulation.Simulation;
 import sis.util.CommandReader;
 import sis.util.JsonCommandReader;
+import sis.util.JsonResultWriter;
+import sis.util.ResultWriter;
 import sis.visualization.ConsoleVisualizer;
 import sis.visualization.Visualizer;
 
@@ -25,7 +27,8 @@ public class Main {
 
         Visualizer visualizer = new ConsoleVisualizer();
         CommandReader commandReader = new JsonCommandReader("commands.json");
-        Simulation simulation = new Simulation(intersection, visualizer, commandReader);
+        ResultWriter resultWriter = new JsonResultWriter("results.json");
+        Simulation simulation = new Simulation(intersection, visualizer, commandReader, resultWriter);
 
         visualizer.visualize(intersection);
         simulation.run();

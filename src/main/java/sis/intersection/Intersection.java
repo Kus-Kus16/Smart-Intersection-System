@@ -9,11 +9,9 @@ import java.util.*;
 
 public class Intersection {
     Map<Direction, IntersectionSide> intersectionSides;
-    List<RoadUser> exitedUsers;
 
     public Intersection() {
         intersectionSides = new HashMap<>();
-        this.exitedUsers = new ArrayList<>();
 
         for (Direction d : Direction.values()) {
             intersectionSides.put(d, new IntersectionSide());
@@ -47,13 +45,7 @@ public class Intersection {
         return intersectionSides.get(direction).hasExitTraffic(types);
     }
 
-    public void addExitedUser(RoadUser user) {
-        this.exitedUsers.add(user);
-    }
-
     public void reset() {
-        this.exitedUsers.clear();
-
         for (IntersectionSide side : intersectionSides.values()) {
             side.resetExitTraffic();
         }
@@ -67,7 +59,4 @@ public class Intersection {
         return intersectionSides;
     }
 
-    public List<RoadUser> getExitedUsers() {
-        return exitedUsers;
-    }
 }

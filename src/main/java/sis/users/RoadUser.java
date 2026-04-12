@@ -7,16 +7,22 @@ import sis.lanes.Lane;
 import sis.lanes.LaneType;
 import sis.lights.TrafficLightState;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class RoadUser {
     protected Lane lane;
     protected Direction entryDirection;
     protected Direction exitDirection;
     protected String id;
 
+    private Set<UserObserver> observers;
+
     public RoadUser(Direction entryDirection, Direction exitDirection, String id) {
         this.entryDirection = entryDirection;
         this.exitDirection = exitDirection;
         this.id = id;
+        this.observers = new HashSet<>();
     }
 
     public abstract boolean canMove(TrafficLightState lightState, Intersection intersection);
@@ -26,6 +32,18 @@ public abstract class RoadUser {
     public void exit(Intersection intersection) {
         IntersectionSide side = intersection.getIntersectionSide(exitDirection);
         side.occupyExit(this.lane.getLaneTypes());
+
+        for (UserObserver observer : this.observers) {
+            observer.onIntersectionExit(this);
+        }
+    }
+
+    public void addObserver(UserObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(UserObserver observer) {
+        observers.remove(observer);
     }
 
     @Override

@@ -63,7 +63,6 @@ public abstract class Lane {
         if (roadUser.canMove(this.trafficLight.getCurrentState(), this.intersection)) {
             queue.poll();
             roadUser.exit(this.intersection);
-            intersection.addExitedUser(roadUser);
         }
     }
 

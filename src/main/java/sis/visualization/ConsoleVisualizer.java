@@ -14,7 +14,6 @@ public class ConsoleVisualizer implements Visualizer {
     public void visualize(Intersection intersection) {
         System.out.println(getIntersectionString(intersection));
         System.out.println("\n\n");
-        System.out.println(getExitedString(intersection));
     }
 
     public String getIntersectionString(Intersection intersection) {
@@ -49,16 +48,6 @@ public class ConsoleVisualizer implements Visualizer {
                 .collect(java.util.stream.Collectors.joining(" "));
     }
 
-    public String getExitedString(Intersection intersection) {
-        StringBuilder sb = new StringBuilder();
-
-        for (RoadUser user : intersection.getExitedUsers()) {
-            sb.append(user.toString()).append("\n");
-        }
-
-        return sb.toString();
-    }
-
     private int getVisibleLength(String s) {
         return s
                 .replaceAll("\u001B\\[[;\\d]*m", "")
@@ -74,5 +63,10 @@ public class ConsoleVisualizer implements Visualizer {
             case BLUE -> "\u001B[34m";
             default -> "\u001B[0m";
         };
+    }
+
+    @Override
+    public void onIntersectionExit(RoadUser user) {
+        System.out.println(user.toString() + "\n");
     }
 }

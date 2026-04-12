@@ -4,7 +4,9 @@ import sis.commands.Command;
 import sis.conditions.Condition;
 import sis.intersection.Intersection;
 import sis.lanes.Lane;
+import sis.users.RoadUser;
 import sis.util.CommandReader;
+import sis.util.ResultWriter;
 import sis.visualization.Visualizer;
 
 import java.io.EOFException;
@@ -16,35 +18,46 @@ public class Simulation {
     private final Intersection intersection;
     private final Visualizer visualizer;
     private final CommandReader commandReader;
+    private final ResultWriter resultWriter;
 
-    public Simulation(Intersection intersection, Visualizer visualizer, CommandReader commandReader) {
+    public Simulation(Intersection intersection, Visualizer visualizer, CommandReader commandReader, ResultWriter resultWriter) {
         this.intersection = intersection;
         this.visualizer = visualizer;
         this.commandReader = commandReader;
+        this.resultWriter = resultWriter;
     }
 
     public void run() throws IOException {
         commandReader.open();
+        resultWriter.open();
+
         while (true) {
             try {
                 Command command = commandReader.readNextCommand();
                 command.execute(this);
             } catch (EOFException e) {
                 commandReader.close();
+                resultWriter.close();
                 return;
             }
         }
     }
 
     public void step() {
-        intersection.reset();
+        try {
+            intersection.reset();
+            resultWriter.startStep();
 
-        ConditionedLanes conditionedLanes = groupLanes();
-        GroupedLanes groupedLanes = calculateChanges(conditionedLanes);
-        queueLightChanges(groupedLanes);
-        moveLanes(groupedLanes);
+            ConditionedLanes conditionedLanes = groupLanes();
+            GroupedLanes groupedLanes = calculateChanges(conditionedLanes);
+            queueLightChanges(groupedLanes);
+            moveLanes(groupedLanes);
 
-        visualizer.visualize(intersection);
+            resultWriter.endStep();
+            visualizer.visualize(intersection);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private ConditionedLanes groupLanes() {
@@ -117,7 +130,14 @@ public class Simulation {
         }
     }
 
+    public void addUser(RoadUser user) {
+        this.intersection.addUser(user);
+        user.addObserver(resultWriter);
+        user.addObserver(visualizer);
+    }
+
     public Intersection getIntersection() {
         return intersection;
     }
+
 }

@@ -23,7 +23,7 @@ public class AddRoadUserCommand extends Command {
             default -> throw new IllegalArgumentException("Unexpected RoadUser: " + userType);
         };
 
-        simulation.getIntersection().addUser(user);
+        simulation.addUser(user);
     }
 
     public void setUserId(String userId) {
