@@ -1,6 +1,6 @@
 package sis.lights;
 
-import sis.visualizatoon.Color;
+import sis.visualization.Color;
 
 import java.util.LinkedList;
 import java.util.List;

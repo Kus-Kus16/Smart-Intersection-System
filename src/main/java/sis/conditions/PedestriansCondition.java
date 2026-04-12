@@ -13,6 +13,6 @@ public class PedestriansCondition implements Condition {
 
     @Override
     public boolean isFulfilled(Lane lane) {
-        return lane.getLaneType().equals(LaneType.PEDESTRIAN) && lane.getEntry().equals(direction);
+        return lane.isLaneType(LaneType.PEDESTRIAN) && lane.getEntry().equals(direction);
     }
 }

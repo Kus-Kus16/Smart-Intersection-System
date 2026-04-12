@@ -1,4 +1,4 @@
-package sis.visualizatoon;
+package sis.visualization;
 
 import sis.lanes.Direction;
 import sis.intersection.Intersection;

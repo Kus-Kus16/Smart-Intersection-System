@@ -1,4 +1,4 @@
-package sis.visualizatoon;
+package sis.visualization;
 
 public enum Color {
     RED,

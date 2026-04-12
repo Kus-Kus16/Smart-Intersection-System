@@ -2,6 +2,7 @@ package sis.intersection;
 
 import sis.lanes.Direction;
 import sis.lanes.Lane;
+import sis.lanes.LaneType;
 import sis.users.RoadUser;
 
 import java.util.*;
@@ -24,6 +25,15 @@ public class Intersection {
         entry.addLane(lane);
     }
 
+    public void addUser(RoadUser user) {
+        IntersectionSide side = intersectionSides.get(user.getEntryDirection());
+        for (Lane lane : side.getEntryLanes()) {
+            if (lane.isLaneType(user.getExpectedLaneType()) && lane.hasExitOn(user.getExitDirection())) {
+                lane.addUser(user);
+            }
+        }
+    }
+
     public Set<Lane> getAllLanes() {
         Set<Lane> lanes = new HashSet<>();
         for (IntersectionSide entry : intersectionSides.values()) {
@@ -33,12 +43,8 @@ public class Intersection {
         return lanes;
     }
 
-    public boolean hasPedestrianTraffic(Direction side) {
-        return intersectionSides.get(side).hasPedestrianTraffic();
-    }
-
-    public boolean hasExitTraffic(Direction side) {
-        return intersectionSides.get(side).hasExitTraffic();
+    public boolean hasExitTraffic(Direction direction, LaneType... types) {
+        return intersectionSides.get(direction).hasExitTraffic(types);
     }
 
     public void addExitedUser(RoadUser user) {
@@ -49,7 +55,7 @@ public class Intersection {
         this.exitedUsers.clear();
 
         for (IntersectionSide side : intersectionSides.values()) {
-            side.resetValues();
+            side.resetExitTraffic();
         }
     }
 

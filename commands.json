@@ -1,0 +1,43 @@
+{
+  "commands": [
+    {
+      "type": "addRoadUser",
+      "userId": "1",
+      "userType": "car",
+      "startRoad": "south",
+      "endRoad": "north"
+    },
+    {
+      "type": "addRoadUser",
+      "userId": "2",
+      "userType": "car",
+      "startRoad": "north",
+      "endRoad": "south"
+    },
+    {
+      "type": "addRoadUser",
+      "userId": "3",
+      "userType": "pedestrian",
+      "startRoad": "south",
+      "endRoad": "south"
+    },
+    {
+      "type": "step"
+    },
+    {
+      "type": "step"
+    },
+    {
+      "type": "step"
+    },
+    {
+      "type": "step"
+    },
+    {
+      "type": "step"
+    },
+    {
+      "type": "step"
+    }
+  ]
+}

@@ -13,7 +13,7 @@ public class CarExitCondition implements Condition {
 
     @Override
     public boolean isFulfilled(Lane lane) {
-        if (lane.getLaneType().equals(LaneType.PEDESTRIAN)) {
+        if (lane.isLaneType(LaneType.PEDESTRIAN)) {
             return false;
         }
 

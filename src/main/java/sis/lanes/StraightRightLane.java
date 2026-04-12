@@ -8,12 +8,14 @@ import sis.intersection.Intersection;
 import sis.lights.GreenArrowTrafficLight;
 
 import java.util.List;
+import java.util.Set;
 
 public class StraightRightLane extends Lane{
 
     public StraightRightLane(Direction entry, Intersection intersection) {
         List<Direction> exits = List.of(Direction.straightFrom(entry), Direction.rightFrom(entry));
-        super(LaneType.CAR, entry, exits, intersection);
+        Set<LaneType> laneTypes = Set.of(LaneType.CAR);
+        super(laneTypes, entry, exits, intersection);
 
         this.trafficLight = new GreenArrowTrafficLight();
     }

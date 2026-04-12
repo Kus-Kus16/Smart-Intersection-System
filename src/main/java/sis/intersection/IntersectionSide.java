@@ -3,19 +3,15 @@ package sis.intersection;
 import sis.lanes.Lane;
 import sis.lanes.LaneType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class IntersectionSide {
     List<Lane> entryLanes;
-    private boolean hasExitTraffic;
-    private boolean hasPedestrianTraffic;
+    private final Set<LaneType> exitTraffic;
 
     public IntersectionSide() {
         entryLanes = new ArrayList<>();
-        this.hasExitTraffic = false;
-        this.hasPedestrianTraffic = false;
+        this.exitTraffic = new HashSet<>();
     }
 
     public void addLane(Lane lane) {
@@ -26,24 +22,25 @@ public class IntersectionSide {
         return entryLanes;
     }
 
-    public boolean hasExitTraffic() {
-        return hasExitTraffic;
+    public boolean hasExitTraffic(LaneType... types) {
+        if (types.length == 0) {
+            return !this.exitTraffic.isEmpty();
+        }
+
+        for (LaneType type : types) {
+            if (this.exitTraffic.contains(type)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    public boolean hasPedestrianTraffic() {
-        return hasPedestrianTraffic;
+    public void resetExitTraffic() {
+        this.exitTraffic.clear();
     }
 
-    public void resetValues() {
-        this.hasExitTraffic = false;
-        this.hasPedestrianTraffic = false;
-    }
-
-    public void occupyExit() {
-        this.hasExitTraffic = true;
-    }
-
-    public void occupyPedestrian() {
-        this.hasPedestrianTraffic = true;
+    public void occupyExit(Collection<LaneType> laneTypes) {
+        this.exitTraffic.addAll(laneTypes);
     }
 }

@@ -5,12 +5,14 @@ import sis.intersection.Intersection;
 import sis.lights.SimpleTrafficLight;
 
 import java.util.List;
+import java.util.Set;
 
 public class LeftLane extends Lane {
 
     public LeftLane(Direction entry, Intersection intersection) {
         List<Direction> exits = List.of(Direction.leftFrom(entry));
-        super(LaneType.CAR_COLLISION_FREE, entry, exits, intersection);
+        Set<LaneType> laneTypes = Set.of(LaneType.CAR, LaneType.COLLISION_FREE);
+        super(laneTypes, entry, exits, intersection);
 
         this.trafficLight = new SimpleTrafficLight();
     }

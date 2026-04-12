@@ -1,14 +1,17 @@
-package sis;//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+package sis;
 
 import sis.intersection.Intersection;
 import sis.lanes.*;
 import sis.simulation.Simulation;
-import sis.visualizatoon.ConsoleVisualizer;
-import sis.visualizatoon.Visualizer;
+import sis.util.CommandReader;
+import sis.util.JsonCommandReader;
+import sis.visualization.ConsoleVisualizer;
+import sis.visualization.Visualizer;
+
+import java.io.IOException;
 
 public class Main {
-    static void main() {
+    static void main() throws IOException {
         Intersection intersection = new Intersection();
 
         for (Direction direction : Direction.values()) {
@@ -21,11 +24,10 @@ public class Main {
         }
 
         Visualizer visualizer = new ConsoleVisualizer();
-        Simulation simulation = new Simulation(intersection, visualizer);
+        CommandReader commandReader = new JsonCommandReader("commands.json");
+        Simulation simulation = new Simulation(intersection, visualizer, commandReader);
 
         visualizer.visualize(intersection);
-        for (int i = 0; i < 15; i++) {
-            simulation.step();
-        }
+        simulation.run();
     }
 }

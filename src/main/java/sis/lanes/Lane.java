@@ -4,12 +4,12 @@ import sis.users.RoadUser;
 import sis.conditions.Condition;
 import sis.intersection.Intersection;
 import sis.lights.TrafficLight;
-import sis.visualizatoon.Color;
+import sis.visualization.Color;
 
 import java.util.*;
 
 public abstract class Lane {
-    protected final LaneType laneType;
+    protected final Set<LaneType> laneTypes;
     protected Queue<RoadUser> queue;
     protected Direction entry;
     protected Set<Direction> exits;
@@ -18,8 +18,8 @@ public abstract class Lane {
 
     protected final List<Condition> conflictConditions;
 
-    public Lane(LaneType laneType, Direction entry, Collection<Direction> exits, Intersection intersection) {
-        this.laneType = laneType;
+    public Lane(Set<LaneType> laneTypes, Direction entry, Collection<Direction> exits, Intersection intersection) {
+        this.laneTypes = laneTypes;
         this.entry = entry;
         this.exits = new HashSet<>(exits);
         this.intersection = intersection;
@@ -30,8 +30,9 @@ public abstract class Lane {
 
     protected abstract List<Condition> generateConflictConditions();
 
-    public void addCar(RoadUser roadUser) {
+    public void addUser(RoadUser roadUser) {
         queue.add(roadUser);
+        roadUser.setLane(this);
     }
 
     public boolean isReadyToChange() {
@@ -75,6 +76,10 @@ public abstract class Lane {
         return exits;
     }
 
+    public boolean hasExitOn(Direction direction) {
+        return exits.contains(direction);
+    }
+
     public TrafficLight getTrafficLight() {
         return trafficLight;
     }
@@ -83,8 +88,12 @@ public abstract class Lane {
         return conflictConditions;
     }
 
-    public LaneType getLaneType() {
-        return laneType;
+    public Set<LaneType> getLaneTypes() {
+        return laneTypes;
+    }
+
+    public boolean isLaneType(LaneType laneType) {
+        return laneTypes.contains(laneType);
     }
 
     public int getQueueSize() {

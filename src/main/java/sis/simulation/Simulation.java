@@ -1,30 +1,48 @@
 package sis.simulation;
 
+import sis.commands.Command;
 import sis.conditions.Condition;
 import sis.intersection.Intersection;
 import sis.lanes.Lane;
-import sis.visualizatoon.Visualizer;
+import sis.util.CommandReader;
+import sis.visualization.Visualizer;
 
+import java.io.EOFException;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Simulation {
     private final Intersection intersection;
     private final Visualizer visualizer;
+    private final CommandReader commandReader;
 
-    public Simulation(Intersection intersection, Visualizer visualizer) {
+    public Simulation(Intersection intersection, Visualizer visualizer, CommandReader commandReader) {
         this.intersection = intersection;
         this.visualizer = visualizer;
+        this.commandReader = commandReader;
+    }
+
+    public void run() throws IOException {
+        commandReader.open();
+        while (true) {
+            try {
+                Command command = commandReader.readNextCommand();
+                command.execute(this);
+            } catch (EOFException e) {
+                commandReader.close();
+                return;
+            }
+        }
     }
 
     public void step() {
         intersection.reset();
 
         ConditionedLanes conditionedLanes = groupLanes();
-        SortedLanes sortedLanes = calculateChanges(conditionedLanes);
-        queueLightChanges(sortedLanes);
-
-        moveLanes(sortedLanes);
+        GroupedLanes groupedLanes = calculateChanges(conditionedLanes);
+        queueLightChanges(groupedLanes);
+        moveLanes(groupedLanes);
 
         visualizer.visualize(intersection);
     }
@@ -47,7 +65,7 @@ public class Simulation {
         return new ConditionedLanes(conflictConditions, changableLanes, nonChangableLanes);
     }
 
-    private SortedLanes calculateChanges(ConditionedLanes conditionedLanes) {
+    private GroupedLanes calculateChanges(ConditionedLanes conditionedLanes) {
         List<Lane> changableLanes = conditionedLanes.changableLanes();
         Set<Condition> conflictConditions = conditionedLanes.conditionSet();
 
@@ -72,10 +90,10 @@ public class Simulation {
             }
         }
 
-        return new SortedLanes(greenLanes, redLanes, conditionedLanes.nonChangableLanes());
+        return new GroupedLanes(greenLanes, redLanes, conditionedLanes.nonChangableLanes());
     }
 
-    private void queueLightChanges(SortedLanes lanes) {
+    private void queueLightChanges(GroupedLanes lanes) {
         for (Lane lane : lanes.greenLanes()) {
             lane.queueGreenLight();
         }
@@ -87,7 +105,7 @@ public class Simulation {
         }
     }
 
-    private void moveLanes(SortedLanes lanes) {
+    private void moveLanes(GroupedLanes lanes) {
         for (Lane lane : lanes.nonChangableLanes()) {
             lane.makeStep();
         }
@@ -99,4 +117,7 @@ public class Simulation {
         }
     }
 
+    public Intersection getIntersection() {
+        return intersection;
+    }
 }
