@@ -13,7 +13,7 @@ import java.util.function.Function;
 public class StrategyPriority extends SimulationStrategy {
     private final Function<Integer, Double> positiveFunction = (v) -> 0.3 * Math.pow(v, 2);
     private final Function<Integer, Double> negativeFunction = (v) -> 12.0 / (v + 1);
-    private final Function<Integer, Double> trafficFunction = Double::valueOf;
+    private final Function<Integer, Double> trafficFunction = (v) -> 1.0 + v / 10;
 
     @Override
     protected ConditionedLanes orderLanes(ConditionedLanes conditionedLanes) {
@@ -30,7 +30,7 @@ public class StrategyPriority extends SimulationStrategy {
             return Double.NEGATIVE_INFINITY;
         }
 
-        return getTimePriority(lane) * (1 + getTrafficPriority(lane) / 10);
+        return getTimePriority(lane) * getTrafficPriority(lane);
     }
 
     private double getTimePriority(Lane lane) {

@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ConsoleVisualizer implements Visualizer {
+    private final boolean colorText;
+
+    public ConsoleVisualizer(boolean colorText) {
+        this.colorText = colorText;
+    }
 
     @Override
     public void beforeStep(Intersection intersection) {
@@ -54,10 +59,16 @@ public class ConsoleVisualizer implements Visualizer {
     private String getLanesString(List<Lane> lanes) {
         return lanes.stream()
                 .map((lane) ->
-                        getStringColor(lane.getColor())
-                        + lane
-                        + "\u001B[0m")
+                       formatText(lane.toString(), lane.getColor()))
                 .collect(java.util.stream.Collectors.joining(" | "));
+    }
+
+    private String formatText(String text, Color color) {
+        if (!colorText) {
+            return text;
+        }
+
+        return getStringColor(color) + text + "\u001B[0m";
     }
 
     private int getVisibleLength(String s) {

@@ -23,6 +23,11 @@ public class Main {
 
         String inputFilename = args[0];
         String outputFilename = args[1];
+        boolean colorEnabled = true;
+
+        if (args.length >= 3) {
+            colorEnabled = Boolean.parseBoolean(args[2]);
+        }
 
         Intersection intersection = new Intersection();
 
@@ -35,7 +40,7 @@ public class Main {
             intersection.addLane(pedestrianLane);
         }
 
-        Visualizer visualizer = new ConsoleVisualizer();
+        Visualizer visualizer = new ConsoleVisualizer(colorEnabled);
         CommandReader commandReader = new JsonCommandReader(inputFilename);
         ResultWriter resultWriter = new JsonResultWriter(outputFilename);
         SimulationStrategy strategy = new StrategyPriority();
