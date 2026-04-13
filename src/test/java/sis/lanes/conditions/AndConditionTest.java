@@ -19,9 +19,9 @@ public class AndConditionTest {
                 Set.of(),
                 null,
                 Set.of());
-        Condition falseCondition = _ -> false;
-        Condition trueCondition1 = _ -> true;
-        Condition trueCondition2 = _ -> true;
+        Condition falseCondition = l -> false;
+        Condition trueCondition1 = l -> true;
+        Condition trueCondition2 = l -> true;
 
         Condition allTrue = new AndCondition(trueCondition1, trueCondition2);
         Condition mixed = new AndCondition(trueCondition1, falseCondition);
