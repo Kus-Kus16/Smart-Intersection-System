@@ -10,10 +10,7 @@ import java.util.Set;
 public class PedestrianLane extends Lane {
 
     public PedestrianLane(Direction side, Intersection intersection) {
-        List<Direction> exits = List.of(side);
-        Set<LaneType> laneTypes = Set.of(LaneType.PEDESTRIAN);
-        super(laneTypes, side, exits, intersection);
-
+        super(Set.of(LaneType.PEDESTRIAN), side, List.of(side), intersection);
         this.trafficLight = new PedestrianTrafficLight();
     }
 

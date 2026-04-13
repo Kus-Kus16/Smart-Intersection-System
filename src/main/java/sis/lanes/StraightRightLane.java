@@ -13,10 +13,7 @@ import java.util.Set;
 public class StraightRightLane extends Lane{
 
     public StraightRightLane(Direction entry, Intersection intersection) {
-        List<Direction> exits = List.of(Direction.straightFrom(entry), Direction.rightFrom(entry));
-        Set<LaneType> laneTypes = Set.of(LaneType.CAR);
-        super(laneTypes, entry, exits, intersection);
-
+        super(Set.of(LaneType.CAR), entry, List.of(Direction.straightFrom(entry), Direction.rightFrom(entry)), intersection);
         this.trafficLight = new GreenArrowTrafficLight();
     }
 

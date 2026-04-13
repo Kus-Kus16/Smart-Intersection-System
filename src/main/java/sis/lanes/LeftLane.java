@@ -11,10 +11,7 @@ import java.util.Set;
 public class LeftLane extends Lane {
 
     public LeftLane(Direction entry, Intersection intersection) {
-        List<Direction> exits = List.of(Direction.leftFrom(entry));
-        Set<LaneType> laneTypes = Set.of(LaneType.CAR, LaneType.COLLISION_FREE);
-        super(laneTypes, entry, exits, intersection);
-
+        super(Set.of(LaneType.CAR, LaneType.COLLISION_FREE), entry, List.of(Direction.leftFrom(entry)), intersection);
         this.trafficLight = new SimpleTrafficLight();
     }
 
