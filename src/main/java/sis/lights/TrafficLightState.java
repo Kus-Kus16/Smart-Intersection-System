@@ -7,7 +7,7 @@ public enum TrafficLightState {
     RED_YELLOW(EntryType.FORBIDDEN, Color.ORANGE),
     GREEN(EntryType.CARELESS, Color.GREEN),
     YELLOW(EntryType.FORBIDDEN, Color.YELLOW),
-    RED_ARROW_GREEN(EntryType.GIVE_WAY, Color.BLUE),
+    RED_ARROW_GREEN(EntryType.GIVE_WAY_ARROW, Color.BLUE),
     BLINK_GREEN(EntryType.FORBIDDEN, Color.GREEN);
 
     private final EntryType entryType;

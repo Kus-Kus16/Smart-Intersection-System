@@ -4,29 +4,31 @@ import sis.visualization.Color;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 
 public abstract class TrafficLight {
-    protected final static int MIN_SKIPPED_STEPS = 1;
     protected TrafficLightState currentState;
     protected Queue<TrafficLightState> statesQueue;
-    protected int skippedSteps;
+    protected int waitingTime;
+    protected boolean transitioningToSafe;
 
     public TrafficLight() {
         this.statesQueue = new LinkedList<>();
         this.currentState = TrafficLightState.RED;
-        this.skippedSteps = 0;
+        this.waitingTime = 0;
+        this.transitioningToSafe = false;
     }
 
     public void queueRed() {
-        queueState(getRedTransition(), isAlreadyRed());
+        queueState(getRedTransition(), isCurrentlyRed(), true);
     }
 
     public void queueGreen() {
-        queueState(getGreenTransition(), isAlreadyGreen());
+        queueState(getGreenTransition(), isCurrentlyGreen(), false);
     }
 
-    private void queueState(List<TrafficLightState> steps, boolean alreadyInState) {
+    private void queueState(List<TrafficLightState> steps, boolean alreadyInState, boolean isSafeState) {
         if (!isReadyToChange()) {
             throw new IllegalStateException();
         }
@@ -36,39 +38,48 @@ public abstract class TrafficLight {
         }
 
         this.statesQueue.addAll(steps);
+        this.transitioningToSafe = isSafeState;
     }
 
     protected abstract List<TrafficLightState> getRedTransition();
     protected abstract List<TrafficLightState> getGreenTransition();
 
-    protected boolean isAlreadyRed() {
+    public boolean isCurrentlyRed() {
         return this.currentState == TrafficLightState.RED;
     }
 
-    protected boolean isAlreadyGreen() {
+    public boolean isCurrentlyGreen() {
         return this.currentState == TrafficLightState.GREEN;
     }
 
     public boolean isReadyToChange() {
-        if (!this.statesQueue.isEmpty()) {
-            return false;
-        }
-
-        if (this.currentState == TrafficLightState.GREEN && this.skippedSteps < MIN_SKIPPED_STEPS) {
-            return false;
-        }
-
-        return true;
+        return this.statesQueue.isEmpty();
     }
 
-    public void makeStep() {
+    public boolean isTransitioningToSafe() {
+        if (this.isReadyToChange()) {
+            return false;
+        }
+
+        return this.transitioningToSafe;
+    }
+
+    public void makeStep(int trafficQueueSize) {
+        if (trafficQueueSize == 0 && !isCurrentlyGreen()) {
+            this.waitingTime = 0;
+        } else {
+            this.waitingTime++;
+        }
+
         if (this.statesQueue.isEmpty()) {
-            this.skippedSteps++;
             return;
         }
 
-        this.skippedSteps = 0;
         this.currentState = statesQueue.poll();
+        if (this.statesQueue.isEmpty()) {
+            this.waitingTime = 0;
+            this.transitioningToSafe = false;
+        }
     }
 
     public TrafficLightState getCurrentState() {
@@ -77,5 +88,9 @@ public abstract class TrafficLight {
 
     public Color getColor() {
         return this.currentState.getColor();
+    }
+
+    public int getWaitingTime() {
+        return waitingTime;
     }
 }

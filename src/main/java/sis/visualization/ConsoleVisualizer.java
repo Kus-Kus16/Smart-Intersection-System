@@ -45,7 +45,7 @@ public class ConsoleVisualizer implements Visualizer {
                         getStringColor(lane.getColor())
                         + lane
                         + "\u001B[0m")
-                .collect(java.util.stream.Collectors.joining(" "));
+                .collect(java.util.stream.Collectors.joining(" | "));
     }
 
     private int getVisibleLength(String s) {

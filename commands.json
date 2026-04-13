@@ -1,43 +1,63 @@
 {
   "commands": [
-    {
-      "type": "addRoadUser",
-      "userId": "1",
-      "userType": "car",
-      "startRoad": "south",
-      "endRoad": "north"
-    },
-    {
-      "type": "addRoadUser",
-      "userId": "2",
-      "userType": "car",
-      "startRoad": "north",
-      "endRoad": "south"
-    },
-    {
-      "type": "addRoadUser",
-      "userId": "3",
-      "userType": "pedestrian",
-      "startRoad": "south",
-      "endRoad": "south"
-    },
-    {
-      "type": "step"
-    },
-    {
-      "type": "step"
-    },
-    {
-      "type": "step"
-    },
-    {
-      "type": "step"
-    },
-    {
-      "type": "step"
-    },
-    {
-      "type": "step"
-    }
+    { "type": "addRoadUser", "userId": "1", "userType": "car", "startRoad": "south", "endRoad": "north" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "2", "userType": "car", "startRoad": "north", "endRoad": "south" },
+    { "type": "addRoadUser", "userId": "3", "userType": "pedestrian", "startRoad": "east", "endRoad": "east" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "4", "userType": "car", "startRoad": "west", "endRoad": "south" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "5", "userType": "car", "startRoad": "south", "endRoad": "west" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "6", "userType": "pedestrian", "startRoad": "north", "endRoad": "north" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "7", "userType": "car", "startRoad": "east", "endRoad": "west" },
+    { "type": "addRoadUser", "userId": "8", "userType": "car", "startRoad": "west", "endRoad": "east" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "9", "userType": "pedestrian", "startRoad": "south", "endRoad": "south" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "10", "userType": "car", "startRoad": "north", "endRoad": "east" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "11", "userType": "car", "startRoad": "east", "endRoad": "north" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "12", "userType": "car", "startRoad": "south", "endRoad": "east" },
+    { "type": "addRoadUser", "userId": "13", "userType": "car", "startRoad": "east", "endRoad": "south" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "14", "userType": "pedestrian", "startRoad": "west", "endRoad": "west" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "15", "userType": "car", "startRoad": "north", "endRoad": "west" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "16", "userType": "car", "startRoad": "west", "endRoad": "north" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "17", "userType": "pedestrian", "startRoad": "east", "endRoad": "east" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "18", "userType": "car", "startRoad": "south", "endRoad": "north" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "19", "userType": "car", "startRoad": "north", "endRoad": "south" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "20", "userType": "car", "startRoad": "west", "endRoad": "east" },
+    { "type": "step" },
+
+    { "type": "addRoadUser", "userId": "21", "userType": "pedestrian", "startRoad": "south", "endRoad": "south" },
+    { "type": "step" },
+
+    { "type": "step" },
+    { "type": "step" }
   ]
 }

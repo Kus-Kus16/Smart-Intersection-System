@@ -21,7 +21,7 @@ public class GreenArrowTrafficLight extends TrafficLight {
     }
 
     @Override
-    protected boolean isAlreadyRed() {
+    public boolean isCurrentlyRed() {
         return this.currentState == TrafficLightState.RED ||
                 this.currentState == TrafficLightState.RED_ARROW_GREEN;
     }

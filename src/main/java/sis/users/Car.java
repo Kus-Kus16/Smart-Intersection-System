@@ -1,7 +1,6 @@
 package sis.users;
 
 import sis.intersection.Intersection;
-import sis.intersection.IntersectionSide;
 import sis.lanes.Direction;
 import sis.lanes.LaneType;
 import sis.lights.TrafficLightState;
@@ -17,7 +16,11 @@ public class Car extends RoadUser{
         return switch (lightState.getEntryType()) {
             case CARELESS -> true;
             case FORBIDDEN -> false;
-            case GIVE_WAY -> {
+            case GIVE_WAY_ARROW -> {
+                if (!exitDirection.equals(Direction.rightFrom(entryDirection))) {
+                    yield false;
+                }
+
                 if (intersection.hasExitTraffic(this.entryDirection, LaneType.PEDESTRIAN)
                     || intersection.hasExitTraffic(this.exitDirection)) {
                     yield false;

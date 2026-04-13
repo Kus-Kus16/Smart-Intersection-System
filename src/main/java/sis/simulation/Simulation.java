@@ -1,9 +1,9 @@
 package sis.simulation;
 
 import sis.commands.Command;
-import sis.conditions.Condition;
 import sis.intersection.Intersection;
 import sis.lanes.Lane;
+import sis.simulation.strategy.SimulationStrategy;
 import sis.users.RoadUser;
 import sis.util.CommandReader;
 import sis.util.ResultWriter;
@@ -12,19 +12,21 @@ import sis.visualization.Visualizer;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Simulation {
     private final Intersection intersection;
     private final Visualizer visualizer;
     private final CommandReader commandReader;
     private final ResultWriter resultWriter;
+    private final SimulationStrategy strategy;
 
-    public Simulation(Intersection intersection, Visualizer visualizer, CommandReader commandReader, ResultWriter resultWriter) {
+    public Simulation(Intersection intersection, Visualizer visualizer, CommandReader commandReader,
+                      ResultWriter resultWriter, SimulationStrategy strategy) {
         this.intersection = intersection;
         this.visualizer = visualizer;
         this.commandReader = commandReader;
         this.resultWriter = resultWriter;
+        this.strategy = strategy;
     }
 
     public void run() throws IOException {
@@ -48,65 +50,19 @@ public class Simulation {
             intersection.reset();
             resultWriter.startStep();
 
-            ConditionedLanes conditionedLanes = groupLanes();
-            GroupedLanes groupedLanes = calculateChanges(conditionedLanes);
-            queueLightChanges(groupedLanes);
-            moveLanes(groupedLanes);
+            visualizer.visualize(intersection);
+
+            ActionGroupedLanes actionGroupedLanes = strategy.groupLanes(intersection.getAllLanes());
+            queueLightChanges(actionGroupedLanes);
+            moveLanes(actionGroupedLanes);
 
             resultWriter.endStep();
-            visualizer.visualize(intersection);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private ConditionedLanes groupLanes() {
-        Set<Condition> conflictConditions = new HashSet<>();
-
-        Map<Boolean, List<Lane>> lanesByReady = intersection.getAllLanes()
-                .stream()
-                .collect(Collectors.groupingBy(Lane::isReadyToChange));
-
-        List<Lane> nonChangableLanes = lanesByReady.getOrDefault(false, Collections.emptyList());
-        for (Lane lane : nonChangableLanes) {
-            conflictConditions.addAll(lane.getConflictConditions());
-        }
-
-        List<Lane> changableLanes = lanesByReady.getOrDefault(true, List.of());
-        Collections.shuffle(changableLanes); // TODO order by priority
-
-        return new ConditionedLanes(conflictConditions, changableLanes, nonChangableLanes);
-    }
-
-    private GroupedLanes calculateChanges(ConditionedLanes conditionedLanes) {
-        List<Lane> changableLanes = conditionedLanes.changableLanes();
-        Set<Condition> conflictConditions = conditionedLanes.conditionSet();
-
-        List<Lane> greenLanes = new LinkedList<>();
-        List<Lane> redLanes = new LinkedList<>();
-
-        for (Lane lane : changableLanes) {
-            boolean passed = true;
-
-            for (Condition conflict : conflictConditions) {
-                if (conflict.isFulfilled(lane)) {
-                    passed = false;
-                    break;
-                }
-            }
-
-            if (passed) {
-                greenLanes.add(lane);
-                conflictConditions.addAll(lane.getConflictConditions());
-            } else {
-                redLanes.add(lane);
-            }
-        }
-
-        return new GroupedLanes(greenLanes, redLanes, conditionedLanes.nonChangableLanes());
-    }
-
-    private void queueLightChanges(GroupedLanes lanes) {
+    private void queueLightChanges(ActionGroupedLanes lanes) {
         for (Lane lane : lanes.greenLanes()) {
             lane.queueGreenLight();
         }
@@ -118,7 +74,7 @@ public class Simulation {
         }
     }
 
-    private void moveLanes(GroupedLanes lanes) {
+    private void moveLanes(ActionGroupedLanes lanes) {
         for (Lane lane : lanes.nonChangableLanes()) {
             lane.makeStep();
         }

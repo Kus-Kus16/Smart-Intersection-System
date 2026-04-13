@@ -1,5 +1,6 @@
 package sis.lanes;
 
+import sis.simulation.strategy.StrategyPriority;
 import sis.users.RoadUser;
 import sis.conditions.Condition;
 import sis.intersection.Intersection;
@@ -54,7 +55,7 @@ public abstract class Lane {
     }
 
     public void makeStep() {
-        this.trafficLight.makeStep();
+        this.trafficLight.makeStep(this.getQueueSize());
         if (this.queue.isEmpty()) {
             return;
         }
@@ -87,6 +88,13 @@ public abstract class Lane {
         return conflictConditions;
     }
 
+    public List<Condition> getCurrentConflictConditions() {
+        if (trafficLight.isReadyToChange()) {
+            return trafficLight.isCurrentlyGreen() ? getConflictConditions() : List.of();
+        }
+        return trafficLight.isTransitioningToSafe() ? List.of() : getConflictConditions();
+    }
+
     public Set<LaneType> getLaneTypes() {
         return laneTypes;
     }
@@ -103,8 +111,16 @@ public abstract class Lane {
 
     @Override
     public String toString() {
-        return this.trafficLight.getCurrentState() + this.getRepresentation() +
-                this.getQueueSize();
+        double priority = new StrategyPriority().getLanePriority(this);//TODO remove
+        String s = String.valueOf(priority);
+        if (priority <= 0) {
+            s = "";
+        }
+
+        return  s + " "
+                + this.trafficLight.getCurrentState()
+                + this.getRepresentation() + " "
+                + this.getQueueSize();
     }
 
     public Color getColor() {

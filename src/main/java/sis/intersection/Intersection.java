@@ -32,8 +32,8 @@ public class Intersection {
         }
     }
 
-    public Set<Lane> getAllLanes() {
-        Set<Lane> lanes = new HashSet<>();
+    public List<Lane> getAllLanes() {
+        List<Lane> lanes = new LinkedList<>();
         for (IntersectionSide entry : intersectionSides.values()) {
             lanes.addAll(entry.getEntryLanes());
         }

@@ -3,6 +3,9 @@ package sis;
 import sis.intersection.Intersection;
 import sis.lanes.*;
 import sis.simulation.Simulation;
+import sis.simulation.strategy.SimulationStrategy;
+import sis.simulation.strategy.StrategyPriority;
+import sis.simulation.strategy.StrategyRandom;
 import sis.util.CommandReader;
 import sis.util.JsonCommandReader;
 import sis.util.JsonResultWriter;
@@ -28,9 +31,10 @@ public class Main {
         Visualizer visualizer = new ConsoleVisualizer();
         CommandReader commandReader = new JsonCommandReader("commands.json");
         ResultWriter resultWriter = new JsonResultWriter("results.json");
-        Simulation simulation = new Simulation(intersection, visualizer, commandReader, resultWriter);
+        SimulationStrategy strategy = new StrategyPriority();
 
-        visualizer.visualize(intersection);
+        Simulation simulation = new Simulation(intersection, visualizer, commandReader, resultWriter, strategy);
+
         simulation.run();
     }
 }

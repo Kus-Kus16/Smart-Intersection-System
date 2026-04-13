@@ -1,7 +1,6 @@
 package sis.users;
 
 import sis.intersection.Intersection;
-import sis.intersection.IntersectionSide;
 import sis.lanes.Direction;
 import sis.lanes.LaneType;
 import sis.lights.TrafficLightState;
@@ -17,7 +16,7 @@ public class Pedestrian extends RoadUser{
         return switch (lightState.getEntryType()) {
             case CARELESS -> true;
             case FORBIDDEN -> false;
-            case GIVE_WAY -> throw new IllegalStateException("Pedestrians cannot give way");
+            case GIVE_WAY_ARROW -> throw new IllegalStateException("Pedestrians cannot give way");
         };
     }
 
