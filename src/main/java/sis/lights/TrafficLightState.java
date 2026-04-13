@@ -1,6 +1,6 @@
 package sis.lights;
 
-import sis.visualization.Color;
+import sis.util.visualization.Color;
 
 public enum TrafficLightState {
     RED(EntryType.FORBIDDEN, Color.RED),

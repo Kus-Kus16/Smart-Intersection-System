@@ -1,8 +1,8 @@
 package sis.util;
 
-import sis.commands.AddRoadUserCommand;
-import sis.commands.Command;
-import sis.commands.StepCommand;
+import sis.simulation.commands.AddRoadUserCommand;
+import sis.simulation.commands.Command;
+import sis.simulation.commands.StepCommand;
 
 import java.io.EOFException;
 import java.io.IOException;

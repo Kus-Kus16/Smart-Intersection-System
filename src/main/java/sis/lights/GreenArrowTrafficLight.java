@@ -4,6 +4,11 @@ import java.util.List;
 
 public class GreenArrowTrafficLight extends TrafficLight {
 
+    public GreenArrowTrafficLight() {
+        super();
+        this.currentState = TrafficLightState.RED_ARROW_GREEN;
+    }
+
     @Override
     protected List<TrafficLightState> getRedTransition() {
         return List.of(

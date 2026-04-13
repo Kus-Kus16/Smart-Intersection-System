@@ -1,10 +1,9 @@
 package sis.lights;
 
-import sis.visualization.Color;
+import sis.util.visualization.Color;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Queue;
 
 public abstract class TrafficLight {

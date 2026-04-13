@@ -1,4 +1,4 @@
-package sis.visualization;
+package sis.util.visualization;
 
 import sis.lanes.Direction;
 import sis.intersection.Intersection;
@@ -10,10 +10,22 @@ import java.util.List;
 import java.util.Map;
 
 public class ConsoleVisualizer implements Visualizer {
+
     @Override
-    public void visualize(Intersection intersection) {
+    public void beforeStep(Intersection intersection) {
+        System.out.println("Before step:\n");
+        visualize(intersection);
+    }
+
+    @Override
+    public void afterStep(Intersection intersection) {
+        System.out.println("After step:\n");
+        visualize(intersection);
+    }
+
+    private void visualize(Intersection intersection) {
         System.out.println(getIntersectionString(intersection));
-        System.out.println("\n\n");
+        System.out.println("\n");
     }
 
     public String getIntersectionString(Intersection intersection) {
@@ -63,10 +75,5 @@ public class ConsoleVisualizer implements Visualizer {
             case BLUE -> "\u001B[34m";
             default -> "\u001B[0m";
         };
-    }
-
-    @Override
-    public void onIntersectionExit(RoadUser user) {
-        System.out.println(user.toString() + "\n");
     }
 }

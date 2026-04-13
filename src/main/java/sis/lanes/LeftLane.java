@@ -1,7 +1,8 @@
 package sis.lanes;
 
-import sis.conditions.*;
+
 import sis.intersection.Intersection;
+import sis.lanes.conditions.*;
 import sis.lights.SimpleTrafficLight;
 
 import java.util.List;

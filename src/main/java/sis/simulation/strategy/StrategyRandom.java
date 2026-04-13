@@ -1,9 +1,7 @@
 package sis.simulation.strategy;
 
-import sis.conditions.Condition;
+import sis.lanes.conditions.Condition;
 import sis.lanes.Lane;
-import sis.simulation.ConditionedLanes;
-import sis.simulation.ActionGroupedLanes;
 
 import java.util.*;
 

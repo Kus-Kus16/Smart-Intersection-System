@@ -1,14 +1,13 @@
-package sis.conditions;
+package sis.lanes.conditions;
 
 import sis.lanes.Lane;
 
-import java.util.List;
+import java.util.Set;
 
-public class AndCondition implements Condition{
-    List<Condition> conditions;
+public record AndCondition(Set<Condition> conditions) implements Condition{
 
     public AndCondition(Condition... conditions){
-        this.conditions = List.of(conditions);
+        this(Set.of(conditions));
     }
 
     @Override

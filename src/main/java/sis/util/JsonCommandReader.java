@@ -5,15 +5,15 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import sis.commands.Command;
+import sis.simulation.commands.Command;
 
 import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 
 public class JsonCommandReader extends CommandReader {
-    JsonParser parser;
-    ObjectMapper mapper;
+    private final JsonParser parser;
+    private final ObjectMapper mapper;
 
     public JsonCommandReader(String filename) throws IOException {
         File file = new File(filename);

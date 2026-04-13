@@ -1,10 +1,8 @@
 package sis.simulation.strategy;
 
-import sis.conditions.Condition;
+import sis.lanes.conditions.Condition;
 import sis.lanes.Lane;
 import sis.lights.TrafficLight;
-import sis.simulation.ConditionedLanes;
-import sis.simulation.ActionGroupedLanes;
 
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -13,12 +11,8 @@ import java.util.Set;
 import java.util.function.Function;
 
 public class StrategyPriority extends SimulationStrategy {
-    private final Function<Integer, Double> positiveFunction = (v) -> {
-        return 0.3 * Math.pow(v, 2);
-    };
-    private final Function<Integer, Double> negativeFunction = (v) -> {
-        return 12.0 / (v + 1);
-    };
+    private final Function<Integer, Double> positiveFunction = (v) -> 0.3 * Math.pow(v, 2);
+    private final Function<Integer, Double> negativeFunction = (v) -> 12.0 / (v + 1);
     private final Function<Integer, Double> trafficFunction = Double::valueOf;
 
     @Override
@@ -31,12 +25,12 @@ public class StrategyPriority extends SimulationStrategy {
         return conditionedLanes;
     }
 
-    public double getLanePriority(Lane lane) {//todo change to private
+    private double getLanePriority(Lane lane) {
         if (lane.getQueueSize() == 0) {
             return Double.NEGATIVE_INFINITY;
         }
 
-        return getTimePriority(lane) * getTrafficPriority(lane);
+        return getTimePriority(lane) * (1 + getTrafficPriority(lane) / 10);
     }
 
     private double getTimePriority(Lane lane) {
@@ -48,7 +42,6 @@ public class StrategyPriority extends SimulationStrategy {
             priorityFunction = positiveFunction;
         }
 
-        System.out.println("x: " + waitingTime + "y: " + priorityFunction.apply(waitingTime));
         return priorityFunction.apply(waitingTime);
     }
 

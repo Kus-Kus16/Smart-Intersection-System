@@ -7,9 +7,14 @@ import sis.users.RoadUser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 
 public class JsonResultWriter extends ResultWriter {
-    JsonGenerator generator;
+    private final JsonGenerator generator;
+    private final Logger logger =  Logger.getLogger("soutLogger");
 
     public JsonResultWriter(String filename) throws IOException {
         File file = new File(filename);
@@ -38,7 +43,7 @@ public class JsonResultWriter extends ResultWriter {
         try {
             generator.writeString(user.getId());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Could not write to Json: " + e.getMessage());
         }
     }
 

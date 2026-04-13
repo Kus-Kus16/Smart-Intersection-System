@@ -1,4 +1,4 @@
-package sis.simulation;
+package sis.simulation.strategy;
 
 import sis.lanes.Lane;
 

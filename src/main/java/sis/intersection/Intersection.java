@@ -28,8 +28,11 @@ public class Intersection {
         for (Lane lane : side.getEntryLanes()) {
             if (lane.isLaneType(user.getExpectedLaneType()) && lane.hasExitOn(user.getExitDirection())) {
                 lane.addUser(user);
+                return;
             }
         }
+
+        throw new IllegalStateException("No suitable lane");
     }
 
     public List<Lane> getAllLanes() {
@@ -53,10 +56,6 @@ public class Intersection {
 
     public IntersectionSide getIntersectionSide(Direction side) {
         return intersectionSides.get(side);
-    }
-
-    public Map<Direction, IntersectionSide> getIntersectionSides() {
-        return intersectionSides;
     }
 
 }

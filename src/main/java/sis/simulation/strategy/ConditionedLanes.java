@@ -1,6 +1,6 @@
-package sis.simulation;
+package sis.simulation.strategy;
 
-import sis.conditions.Condition;
+import sis.lanes.conditions.Condition;
 import sis.lanes.Lane;
 
 import java.util.List;

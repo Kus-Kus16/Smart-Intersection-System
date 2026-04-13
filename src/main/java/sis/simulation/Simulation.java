@@ -1,17 +1,19 @@
 package sis.simulation;
 
-import sis.commands.Command;
+import sis.simulation.commands.Command;
 import sis.intersection.Intersection;
 import sis.lanes.Lane;
+import sis.simulation.strategy.ActionGroupedLanes;
 import sis.simulation.strategy.SimulationStrategy;
 import sis.users.RoadUser;
 import sis.util.CommandReader;
 import sis.util.ResultWriter;
-import sis.visualization.Visualizer;
+import sis.util.visualization.Visualizer;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Simulation {
     private final Intersection intersection;
@@ -19,6 +21,7 @@ public class Simulation {
     private final CommandReader commandReader;
     private final ResultWriter resultWriter;
     private final SimulationStrategy strategy;
+    private final Logger logger =  Logger.getLogger("soutLogger");
 
     public Simulation(Intersection intersection, Visualizer visualizer, CommandReader commandReader,
                       ResultWriter resultWriter, SimulationStrategy strategy) {
@@ -49,16 +52,16 @@ public class Simulation {
         try {
             intersection.reset();
             resultWriter.startStep();
-
-            visualizer.visualize(intersection);
+            visualizer.beforeStep(intersection);
 
             ActionGroupedLanes actionGroupedLanes = strategy.groupLanes(intersection.getAllLanes());
             queueLightChanges(actionGroupedLanes);
             moveLanes(actionGroupedLanes);
 
+            visualizer.afterStep(intersection);
             resultWriter.endStep();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "IO exception during step: " + e.getMessage());
         }
     }
 
@@ -68,9 +71,6 @@ public class Simulation {
         }
         for (Lane lane : lanes.redLanes()) {
             lane.queueRedLight();
-        }
-        for (Lane lane : lanes.nonChangableLanes()) {
-            lane.doNotChange();
         }
     }
 
@@ -89,7 +89,6 @@ public class Simulation {
     public void addUser(RoadUser user) {
         this.intersection.addUser(user);
         user.addObserver(resultWriter);
-        user.addObserver(visualizer);
     }
 
     public Intersection getIntersection() {

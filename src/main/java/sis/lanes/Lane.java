@@ -2,10 +2,10 @@ package sis.lanes;
 
 import sis.simulation.strategy.StrategyPriority;
 import sis.users.RoadUser;
-import sis.conditions.Condition;
+import sis.lanes.conditions.Condition;
 import sis.intersection.Intersection;
 import sis.lights.TrafficLight;
-import sis.visualization.Color;
+import sis.util.visualization.Color;
 
 import java.util.*;
 
@@ -41,17 +41,11 @@ public abstract class Lane {
     }
 
     public void queueGreenLight() {
-        System.out.println("Queueing green light " + this.entry + " " + this.getClass().getSimpleName());
         this.trafficLight.queueGreen();
     }
 
     public void queueRedLight() {
-        System.out.println("Queueing red light " + this.entry + " " + this.getClass().getSimpleName());
         this.trafficLight.queueRed();
-    }
-
-    public void doNotChange() { //TODO remove
-        System.out.println("Cannot change " + this.entry + " " + this.getClass().getSimpleName());
     }
 
     public void makeStep() {
@@ -111,14 +105,7 @@ public abstract class Lane {
 
     @Override
     public String toString() {
-        double priority = new StrategyPriority().getLanePriority(this);//TODO remove
-        String s = String.valueOf(priority);
-        if (priority <= 0) {
-            s = "";
-        }
-
-        return  s + " "
-                + this.trafficLight.getCurrentState()
+        return  this.trafficLight.getCurrentState()
                 + this.getRepresentation() + " "
                 + this.getQueueSize();
     }

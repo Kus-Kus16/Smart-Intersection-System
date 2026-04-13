@@ -1,9 +1,9 @@
 package sis.lanes;
 
-import sis.conditions.Condition;
-import sis.conditions.CarEntryCondition;
-import sis.conditions.CarExitCondition;
-import sis.conditions.PedestriansCondition;
+import sis.lanes.conditions.Condition;
+import sis.lanes.conditions.CarEntryCondition;
+import sis.lanes.conditions.CarExitCondition;
+import sis.lanes.conditions.PedestriansCondition;
 import sis.intersection.Intersection;
 import sis.lights.GreenArrowTrafficLight;
 

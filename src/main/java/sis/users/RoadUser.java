@@ -42,10 +42,6 @@ public abstract class RoadUser {
         observers.add(observer);
     }
 
-    public void removeObserver(UserObserver observer) {
-        observers.remove(observer);
-    }
-
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + " Entry: " + this.entryDirection + " Exit: " + this.exitDirection;

@@ -1,4 +1,4 @@
-package sis.commands;
+package sis.simulation.commands;
 
 import sis.lanes.Direction;
 import sis.simulation.Simulation;

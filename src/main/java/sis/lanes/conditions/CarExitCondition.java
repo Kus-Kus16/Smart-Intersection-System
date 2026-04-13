@@ -1,15 +1,10 @@
-package sis.conditions;
+package sis.lanes.conditions;
 
 import sis.lanes.Direction;
 import sis.lanes.Lane;
 import sis.lanes.LaneType;
 
-public class CarExitCondition implements Condition {
-    private final Direction direction;
-
-    public CarExitCondition(Direction direction) {
-        this.direction = direction;
-    }
+public record CarExitCondition(Direction direction) implements Condition {
 
     @Override
     public boolean isFulfilled(Lane lane) {
