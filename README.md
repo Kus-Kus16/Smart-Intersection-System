@@ -33,23 +33,21 @@ kroku samo zmieni się na czerwone - nie możemy go więc teraz zmienić.
 ### 2. Sortowanie pasów
 Pozostałe pasy są sortowane według ich aktualnego priorytetu, na który składa się czas oczekiwania
 oraz długość kolejki:
-$$
-P_{riority} =
+
+
+$$P_{riority} =
 \begin{cases}
 \ -\infty & \text{gdy kolejka jest pusta } \\
 \ T_{ime}\ \cdot\ S_{ize} & \text{wpp.}
-\end{cases}
-$$
-$$
-S_{ize} = 1 + \frac{n}{10}
-$$
-$$
-T_{ime} =
+\end{cases}$$
+$$S_{ize} = 1 + \frac{n}{10}$$
+$$T_{ime} =
 \begin{cases}
 \ 0.3\ \cdot\ t^2 & \text{gdy światło jest czerwone} \\
 \ \frac{12}{t + 1} & \text{wpp.}
-\end{cases}
-$$
+\end{cases}$$
+
+
 Gdzie $t$ jest czasem od zmiany świateł dla użytkowników pasa, a $n$ liczbą użytkowników pasa.
 
 Algorytm ten penalizuje długie oczekiwanie na czerwonym, oraz szybkie zmiany z zielonego światła,
@@ -75,6 +73,56 @@ java -jar build/libs/sis.jar input.json output.json
 Jeśli terminal nie obsługuje kolorowania ansi, można podać dodatkowy argument, który je wyłączy:
 ```
 java -jar build/libs/sis.jar input.json output.json false
+```
+
+## Format danych
+Plik wejściowy oczekuje formatu:
+```json
+{
+  "commands": [
+    { 
+      "type": "addRoadUser", 
+      "userId": "1", 
+      "userType": "car", 
+      "startRoad": "south", 
+      "endRoad": "north"
+    },
+    { 
+      "type": "addRoadUser", 
+      "userId": "2", 
+      "userType": "car", 
+      "startRoad": "south", 
+      "endRoad": "north"
+    },
+    { 
+      "type": "step"
+    },
+    { 
+      "type": "addRoadUser", 
+      "userId": "3", 
+      "userType": "car", 
+      "startRoad": "west", 
+      "endRoad": "south"
+    }
+  ]
+}
+```
+
+Natomiast format wyjściowy to:
+```json
+{
+  "stepStatuses" : [ 
+    {
+      "leftRoadUsers" : [ "3" ]
+    }, 
+    {
+      "leftRoadUsers" : [  ]
+    },
+    {
+      "leftRoadUsers" : [ "2" ]
+    }
+  ]
+}
 ```
 
 ## Użyte technologie
