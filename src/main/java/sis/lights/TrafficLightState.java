@@ -6,6 +6,7 @@ public enum TrafficLightState {
     RED(EntryType.FORBIDDEN, Color.RED),
     RED_YELLOW(EntryType.FORBIDDEN, Color.ORANGE),
     GREEN(EntryType.CARELESS, Color.GREEN),
+    COLLISION_GREEN(EntryType.CAUTION, Color.GREEN),
     YELLOW(EntryType.FORBIDDEN, Color.YELLOW),
     RED_ARROW_GREEN(EntryType.GIVE_WAY_ARROW, Color.BLUE),
     BLINK_GREEN(EntryType.FORBIDDEN, Color.GREEN);
@@ -24,5 +25,9 @@ public enum TrafficLightState {
 
     public Color getColor() {
         return color;
+    }
+
+    public int getMovePriority() {
+        return entryType.getMovePriority();
     }
 }

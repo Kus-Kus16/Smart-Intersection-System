@@ -2,7 +2,7 @@ package sis.lights;
 
 import java.util.List;
 
-public class SimpleTrafficLight extends TrafficLight {
+public class CollisionFreeTrafficLight extends TrafficLight {
 
     @Override
     protected List<TrafficLightState> getRedTransition() {
@@ -16,12 +16,12 @@ public class SimpleTrafficLight extends TrafficLight {
     protected List<TrafficLightState> getGreenTransition() {
         return List.of(
                 TrafficLightState.RED_YELLOW,
-                TrafficLightState.COLLISION_GREEN
+                TrafficLightState.GREEN
         );
     }
 
     @Override
     public boolean isCurrentlyGreen() {
-        return this.currentState == TrafficLightState.COLLISION_GREEN;
+        return this.currentState == TrafficLightState.GREEN;
     }
 }

@@ -12,6 +12,8 @@ import sis.util.visualization.Visualizer;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,7 +58,8 @@ public class Simulation {
 
             ActionGroupedLanes actionGroupedLanes = strategy.groupLanes(intersection.getAllLanes());
             queueLightChanges(actionGroupedLanes);
-            moveLanes(actionGroupedLanes);
+            changeLights(actionGroupedLanes);
+            moveUsers();
 
             visualizer.afterStep(intersection);
             resultWriter.endStep();
@@ -74,15 +77,23 @@ public class Simulation {
         }
     }
 
-    private void moveLanes(ActionGroupedLanes lanes) {
+    private void changeLights(ActionGroupedLanes lanes) {
         for (Lane lane : lanes.nonChangableLanes()) {
-            lane.makeStep();
+            lane.nextLight();
         }
         for (Lane lane : lanes.greenLanes()) {
-            lane.makeStep();
+            lane.nextLight();
         }
         for (Lane lane : lanes.redLanes()) {
-            lane.makeStep();
+            lane.nextLight();
+        }
+    }
+
+    private void moveUsers() {
+        List<Lane> lanes = intersection.getAllLanes();
+        lanes.sort(Comparator.comparingInt(Lane::getMovePriority).reversed());
+        for (Lane lane : lanes) {
+            lane.moveUsers();
         }
     }
 

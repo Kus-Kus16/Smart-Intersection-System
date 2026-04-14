@@ -3,7 +3,7 @@ package sis.lanes;
 
 import sis.intersection.Intersection;
 import sis.lanes.conditions.*;
-import sis.lights.SimpleTrafficLight;
+import sis.lights.CollisionFreeTrafficLight;
 
 import java.util.List;
 import java.util.Set;
@@ -12,7 +12,7 @@ public class LeftLane extends Lane {
 
     public LeftLane(Direction entry, Intersection intersection) {
         super(Set.of(LaneType.CAR, LaneType.COLLISION_FREE), entry, List.of(Direction.leftFrom(entry)), intersection);
-        this.trafficLight = new SimpleTrafficLight();
+        this.trafficLight = new CollisionFreeTrafficLight();
     }
 
 

@@ -46,10 +46,7 @@ public abstract class TrafficLight {
     public boolean isCurrentlyRed() {
         return this.currentState == TrafficLightState.RED;
     }
-
-    public boolean isCurrentlyGreen() {
-        return this.currentState == TrafficLightState.GREEN;
-    }
+    public abstract boolean isCurrentlyGreen();
 
     public boolean isReadyToChange() {
         return this.statesQueue.isEmpty();

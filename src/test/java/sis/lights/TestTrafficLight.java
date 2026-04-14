@@ -21,4 +21,9 @@ public class TestTrafficLight extends TrafficLight {
     protected List<TrafficLightState> getGreenTransition() {
         return List.of(TrafficLightState.RED_YELLOW, TrafficLightState.GREEN);
     }
+
+    @Override
+    public boolean isCurrentlyGreen() {
+        return this.currentState == TrafficLightState.GREEN;
+    }
 }

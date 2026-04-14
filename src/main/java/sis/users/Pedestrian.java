@@ -16,7 +16,7 @@ public class Pedestrian extends RoadUser{
         return switch (lightState.getEntryType()) {
             case CARELESS -> true;
             case FORBIDDEN -> false;
-            case GIVE_WAY_ARROW -> throw new IllegalStateException("Pedestrians cannot give way");
+            default -> throw new IllegalStateException("Pedestrians cannot use advanced lightstates");
         };
     }
 

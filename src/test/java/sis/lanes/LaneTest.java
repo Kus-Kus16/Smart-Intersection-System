@@ -1,7 +1,6 @@
 package sis.lanes;
 
 import org.junit.jupiter.api.Test;
-import sis.intersection.Intersection;
 import sis.lights.TestTrafficLight;
 import sis.lights.TrafficLight;
 import sis.lights.TrafficLightState;
@@ -60,7 +59,7 @@ public class LaneTest {
         RoadUser roadUser = new TestRoadUser(Direction.SOUTH, Direction.NORTH);
 
         lane.addUser(roadUser);
-        lane.makeStep();
+        lane.moveUsers();
 
         assertEquals(0, lane.getQueueSize());
     }
@@ -77,7 +76,7 @@ public class LaneTest {
         RoadUser roadUser = new TestRoadUser(Direction.SOUTH, Direction.NORTH);
 
         lane.addUser(roadUser);
-        lane.makeStep();
+        lane.moveUsers();
 
         assertEquals(1, lane.getQueueSize());
     }

@@ -1,6 +1,5 @@
 package sis.lanes;
 
-import sis.simulation.strategy.StrategyPriority;
 import sis.users.RoadUser;
 import sis.lanes.conditions.Condition;
 import sis.intersection.Intersection;
@@ -48,8 +47,11 @@ public abstract class Lane {
         this.trafficLight.queueRed();
     }
 
-    public void makeStep() {
+    public void nextLight() {
         this.trafficLight.makeStep(this.getQueueSize());
+    }
+
+    public void moveUsers() {
         if (this.queue.isEmpty()) {
             return;
         }
@@ -60,7 +62,6 @@ public abstract class Lane {
             roadUser.exit(this.intersection);
         }
     }
-
 
     public Direction getEntry() {
         return entry;
@@ -112,5 +113,9 @@ public abstract class Lane {
 
     public Color getColor() {
         return this.trafficLight.getColor();
+    }
+
+    public int getMovePriority() {
+        return trafficLight.getCurrentState().getMovePriority();
     }
 }

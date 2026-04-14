@@ -14,11 +14,12 @@ public class CarTest {
     @Test
     public void canMoveTest() {
         Car car = new Car(Direction.SOUTH, Direction.NORTH, "");
+        Intersection intersection = new Intersection();
 
-        assertTrue(car.canMove(TrafficLightState.GREEN, null));
-        assertFalse(car.canMove(TrafficLightState.RED, null));
-        assertFalse(car.canMove(TrafficLightState.RED_ARROW_GREEN, null));
-
+        assertTrue(car.canMove(TrafficLightState.GREEN, intersection));
+        assertTrue(car.canMove(TrafficLightState.COLLISION_GREEN, intersection));
+        assertFalse(car.canMove(TrafficLightState.RED, intersection));
+        assertFalse(car.canMove(TrafficLightState.RED_ARROW_GREEN, intersection));
     }
 
     @Test

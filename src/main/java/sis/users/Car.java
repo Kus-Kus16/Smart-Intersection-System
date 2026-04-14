@@ -16,6 +16,13 @@ public class Car extends RoadUser{
         return switch (lightState.getEntryType()) {
             case CARELESS -> true;
             case FORBIDDEN -> false;
+            case CAUTION -> {
+                if (intersection.hasExitTraffic(this.exitDirection)) {
+                    yield false;
+                }
+                
+                yield true;
+            }
             case GIVE_WAY_ARROW -> {
                 if (!exitDirection.equals(Direction.rightFrom(entryDirection))) {
                     yield false;

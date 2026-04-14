@@ -21,7 +21,7 @@ public class GreenArrowTrafficLight extends TrafficLight {
     protected List<TrafficLightState> getGreenTransition() {
         return List.of(
                 TrafficLightState.RED_YELLOW,
-                TrafficLightState.GREEN
+                TrafficLightState.COLLISION_GREEN
         );
     }
 
@@ -29,6 +29,12 @@ public class GreenArrowTrafficLight extends TrafficLight {
     public boolean isCurrentlyRed() {
         return this.currentState == TrafficLightState.RED ||
                 this.currentState == TrafficLightState.RED_ARROW_GREEN;
+    }
+
+
+    @Override
+    public boolean isCurrentlyGreen() {
+        return this.currentState == TrafficLightState.COLLISION_GREEN;
     }
 
 }

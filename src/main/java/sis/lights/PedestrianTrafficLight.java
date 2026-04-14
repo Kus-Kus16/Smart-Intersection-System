@@ -19,4 +19,9 @@ public class PedestrianTrafficLight extends TrafficLight {
                 TrafficLightState.GREEN
         );
     }
+
+    @Override
+    public boolean isCurrentlyGreen() {
+        return this.currentState == TrafficLightState.GREEN;
+    }
 }
